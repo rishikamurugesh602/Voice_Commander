@@ -26,10 +26,45 @@ if "last_result" not in st.session_state:
 # ===== Header =====
 ui_helpers.render_header()
 
-# ===== Command input =====
-st.markdown("### Type a command")
+# ===== Voice + Text command input =====
+from streamlit_mic_recorder import mic_recorder
+from services import voice_service
+
+st.markdown("### Speak or type a command")
 st.caption('Try: "Add milk", "I need 2 bottles of water", "Remove milk", "Find toothpaste under 200 rupees"')
 
+col_mic, col_lang = st.columns([1, 2])
+
+with col_lang:
+    language = st.selectbox("Language", ["English", "Hindi", "Tamil"], label_visibility="collapsed")
+
+with col_mic:
+    audio = mic_recorder(
+        start_prompt="🎤 Start Recording",
+        stop_prompt="⏹️ Stop Recording",
+        just_once=True,
+        key="mic"
+    )
+
+if audio:
+    with st.spinner("Transcribing..."):
+        success, transcript_or_error = voice_service.transcribe_audio(audio["bytes"], language)
+
+    if success:
+        st.info(f"Heard: \"{transcript_or_error}\"")
+        result = command_handler.execute(transcript_or_error)
+        st.session_state.last_result = result
+        st.rerun()
+    else:
+        st.session_state.last_result = {
+            "success": False,
+            "message": transcript_or_error,
+            "intent": None,
+            "data": None,
+        }
+        st.rerun()
+
+st.markdown("**Or type a command:**")
 command_text = st.text_input("Command", label_visibility="collapsed", placeholder="Type your command here...")
 
 if st.button("Execute", type="primary"):

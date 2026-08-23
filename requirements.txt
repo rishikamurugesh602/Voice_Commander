@@ -1,2 +1,5 @@
 rapidfuzz
 streamlit
+streamlit-mic-recorder
+SpeechRecognition
+pydub
