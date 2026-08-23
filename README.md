@@ -84,37 +84,37 @@ Each layer has a single responsibility and can be tested independently:
 
 ## Project Structure
 
+## Project Structure
+
+```
 voice-shopping-assistant/
-│
-├── app.py # Streamlit entrypoint
+├── app.py                        # Streamlit entrypoint
 ├── requirements.txt
-├── packages.txt # System-level deps (ffmpeg) for deployment
+├── packages.txt                  # System-level deps (ffmpeg) for deployment
 ├── README.md
 ├── .gitignore
 │
 ├── services/
-│ ├── voice_service.py # Mic audio → text (Speech-to-Text)
-│ ├── nlu_engine.py # Text → {intent, entities}
-│ ├── command_handler.py # Orchestrates NLU → DB actions
-│ ├── recommendation_engine.py # Frequency + seasonal suggestions
-│ └── db_service.py # All SQLite operations
+│   ├── voice_service.py          # Mic audio -> text (Speech-to-Text)
+│   ├── nlu_engine.py             # Text -> intent + entities
+│   ├── command_handler.py        # Orchestrates NLU -> DB actions
+│   ├── recommendation_engine.py  # Frequency + seasonal suggestions
+│   └── db_service.py             # All SQLite operations
 │
 ├── database/
-│ └── schema.sql # Table definitions
+│   └── schema.sql                # Table definitions
 │
 ├── data/
-│ ├── products.json # Seed product catalog
-│ ├── substitutions.json # Substitution map
-│ └── seasonal.json # Month → seasonal items
+│   ├── products.json             # Seed product catalog
+│   ├── substitutions.json        # Substitution map
+│   └── seasonal.json             # Month -> seasonal items
 │
 ├── components/
-│ └── ui_helpers.py # Reusable render functions
+│   └── ui_helpers.py             # Reusable render functions
 │
 └── assets/
-└── style.css # Custom styling
-
-
----
+    └── style.css                 # Custom styling
+```
 
 ## Database Schema
 
