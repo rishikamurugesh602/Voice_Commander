@@ -16,8 +16,9 @@ st.set_page_config(
 )
 
 # ===== Init =====
-db_service.init_db()
-ui_helpers.load_css()
+with st.spinner("Loading EchoCart..."):
+    db_service.init_db()
+    ui_helpers.load_css()
 
 # ===== Session state (holds last command result across reruns) =====
 if "last_result" not in st.session_state:
@@ -47,10 +48,14 @@ with col_mic:
     )
 
 if audio:
-    with st.spinner("Transcribing..."):
-        success, transcript_or_error = voice_service.transcribe_audio(audio["bytes"], language)
+    with st.spinner("🎧 Transcribing your voice..."):
+       st.successs, transcript_or_error = voice_service.transcribe_audio(audio["bytes"], language)
 
-    if success:
+    if st.success:
+        with st.spinner("🧠 Understanding command..."):
+            pass  # brief visual pause; actual processing happens in command_handler.execute() below
+
+    if st.success:
         st.info(f"Heard: \"{transcript_or_error}\"")
         result = command_handler.execute(transcript_or_error)
         st.session_state.last_result = result
@@ -93,3 +98,7 @@ ui_helpers.render_suggestions(suggestions)
 st.markdown("### Your Shopping List")
 shopping_list = db_service.get_shopping_list()
 ui_helpers.render_shopping_list(shopping_list)
+
+# ===== Recent commands panel =====
+recent = db_service.get_recent_commands(limit=10)
+ui_helpers.render_recent_commands(recent)

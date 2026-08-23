@@ -134,3 +134,28 @@ def render_suggestions(suggestions):
                     from services import command_handler
                     command_handler.execute(f"Add {item}")
                     st.rerun()
+def render_recent_commands(commands, limit=5):
+    """Collapsible panel showing recent voice/text commands and whether they succeeded."""
+    if not commands:
+        return
+
+    with st.expander(f"🕘 Recent Commands ({len(commands[:limit])})"):
+        for cmd in commands[:limit]:
+            badge_class = "history-badge-success" if cmd["success"] else "history-badge-fail"
+            badge_text = "OK" if cmd["success"] else "Failed"
+            intent = cmd["detected_intent"] or "Unrecognized"
+            st.markdown(f"""
+                <div class="history-item">
+                    <span>"{cmd['raw_transcript']}" → {intent}</span>
+                    <span class="history-badge {badge_class}">{badge_text}</span>
+                </div>
+            """, unsafe_allow_html=True)
+
+
+def render_loading_state(message="Processing..."):
+    """Simple reusable loading indicator."""
+    st.markdown(f"""
+        <div style="display:flex; align-items:center; gap:0.5rem; color:#8b8fa3; padding: 0.5rem 0;">
+            <span>⏳ {message}</span>
+        </div>
+    """, unsafe_allow_html=True)
