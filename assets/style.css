@@ -1,0 +1,110 @@
+/* ===== Base ===== */
+.stApp {
+    background: linear-gradient(180deg, #0f1117 0%, #161925 100%);
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+/* Hide default Streamlit chrome for a cleaner look */
+#MainMenu, footer, header {visibility: hidden;}
+
+/* ===== Header ===== */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 1.5rem;
+}
+
+.app-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+}
+
+.app-subtitle {
+    color: #8b8fa3;
+    font-size: 0.9rem;
+    margin-top: 0.2rem;
+}
+
+/* ===== Cards ===== */
+.item-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.6rem;
+    transition: all 0.2s ease;
+}
+
+.item-card:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(124,138,255,0.4);
+}
+
+.category-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #7c8aff;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    margin-top: 1.2rem;
+}
+
+/* ===== Product / search cards ===== */
+.product-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 1rem;
+    text-align: left;
+}
+
+.product-price {
+    color: #4ade80;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.product-brand {
+    color: #8b8fa3;
+    font-size: 0.8rem;
+}
+
+/* ===== Empty state ===== */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6b7085;
+}
+
+.empty-state-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+}
+
+/* ===== Toast-style message ===== */
+.feedback-success {
+    background: rgba(74,222,128,0.12);
+    border: 1px solid rgba(74,222,128,0.3);
+    color: #4ade80;
+    padding: 0.7rem 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.feedback-error {
+    background: rgba(248,113,113,0.12);
+    border: 1px solid rgba(248,113,113,0.3);
+    color: #f87171;
+    padding: 0.7rem 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
