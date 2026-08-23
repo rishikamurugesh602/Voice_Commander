@@ -18,15 +18,60 @@ WORD_TO_NUMBER = {
     "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
     "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10
 }
+# Common product names in Hindi/Tamil -> English catalog name
+# Covers the core products most likely to be demoed for multilingual testing.
+MULTILINGUAL_PRODUCTS = {
+    # Hindi
+    "दूध": "Milk",
+    "ब्रेड": "Bread",
+    "रोटी": "Bread",
+    "सेब": "Apples",
+    "केला": "Bananas",
+    "पानी": "Water",
+    "चावल": "Rice",
+    "चीनी": "Sugar",
+    "चाय": "Tea",
+    # Tamil
+    "பால்": "Milk",
+    "ரொட்டி": "Bread",
+    "ஆப்பிள்": "Apples",
+    "வாழைப்பழம்": "Bananas",
+    "தண்ணீர்": "Water",
+    "அரிசி": "Rice",
+    "சர்க்கரை": "Sugar",
+    "தேநீர்": "Tea",
+}
 
+# Ordered intent patterns — first match wins.
+# Each entry: (INTENT_NAME, [regex patterns])
+# Includes English, Hindi, and Tamil keywords for core commands.
 INTENT_PATTERNS = [
-    ("REMOVE", [r"\bremove\b", r"\bdelete\b", r"\btake off\b", r"\bcancel\b"]),
-    ("UPDATE", [r"\bchange\b", r"\bupdate\b", r"\bmake it\b", r"\bset\b.*\bto\b"]),
-    ("SUBSTITUTE", [r"\balternative", r"\bsubstitute", r"\breplace", r"\binstead of\b"]),
-    ("SEARCH", [r"\bfind\b", r"\bsearch\b", r"\blook for\b", r"\bshow me\b"]),
-    ("ADD", [r"\badd\b", r"\bbuy\b", r"\bget\b", r"\bput\b.*\bon\b", r"\bneed\b"]),
+    ("REMOVE", [
+        r"\bremove\b", r"\bdelete\b", r"\btake off\b", r"\bcancel\b",
+        r"हटाओ", r"निकालो",              # Hindi: remove/take out
+        r"நீக்கு", r"எடு",                # Tamil: remove/take out
+    ]),
+    ("UPDATE", [
+        r"\bchange\b", r"\bupdate\b", r"\bmake it\b", r"\bset\b.*\bto\b",
+        r"बदलो", r"बदल दो",               # Hindi: change
+        r"மாற்று",                         # Tamil: change
+    ]),
+    ("SUBSTITUTE", [
+        r"\balternative", r"\bsubstitute", r"\breplace", r"\binstead of\b",
+        r"विकल्प",                         # Hindi: alternative
+        r"மாற்று\s*பொருள்",                 # Tamil: alternative product
+    ]),
+    ("SEARCH", [
+        r"\bfind\b", r"\bsearch\b", r"\blook for\b", r"\bshow me\b",
+        r"ढूंढो", r"खोजो",                 # Hindi: find/search
+        r"தேடு", r"கண்டுபிடி",             # Tamil: find/search
+    ]),
+    ("ADD", [
+        r"\badd\b", r"\bbuy\b", r"\bget\b", r"\bput\b.*\bon\b", r"\bneed\b",
+        r"डालो", r"जोड़ो", r"चाहिए",        # Hindi: add/need
+        r"சேர்", r"வேண்டும்",               # Tamil: add/need
+    ]),
 ]
-
 
 def normalize(text):
     text = text.lower().strip()
@@ -75,6 +120,9 @@ def extract_brand(text):
 
 
 def extract_item(text, intent):
+    for foreign_word, english_name in MULTILINGUAL_PRODUCTS.items():
+        if foreign_word in text:
+            return english_name
     cleaned = re.sub(r"\b\d+\b", "", text)
     noise_words = [
         "bottles", "bottle", "of", "to", "my", "list", "shopping",
