@@ -2,7 +2,7 @@
 
 A voice-powered shopping list manager with natural language understanding, smart recommendations, and multilingual support. Built as a technical assessment project demonstrating full-stack thinking: voice input, NLP command parsing, persistent storage, and a polished UI — all in a deliberately simple, explainable architecture.
 
-**Live App:** [https://your-app-name.streamlit.app](https://your-app-name.streamlit.app) *(replace with your actual deployed URL)*
+**Live App:** https://voicecommander-kzxw5emzuqktq2nmyrqyrs.streamlit.app/
 **Repository:** https://github.com/rishikamurugesh602/Voice_Commander
 
 ---
