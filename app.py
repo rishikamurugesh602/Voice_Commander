@@ -5,7 +5,7 @@ Main Streamlit entrypoint for EchoCart.
 """
 
 import streamlit as st
-from services import db_service, command_handler
+from services import db_service, command_handler, recommendation_engine
 from components import ui_helpers
 
 # ===== Page config (must be first Streamlit call) =====
@@ -84,6 +84,10 @@ if st.session_state.last_result:
 if st.session_state.last_result and st.session_state.last_result["intent"] == "SEARCH":
     st.markdown("### Search Results")
     ui_helpers.render_search_results(st.session_state.last_result["data"])
+
+# ===== Smart Suggestions =====
+suggestions = recommendation_engine.get_all_suggestions()
+ui_helpers.render_suggestions(suggestions)
 
 # ===== Shopping list (always shown) =====
 st.markdown("### Your Shopping List")

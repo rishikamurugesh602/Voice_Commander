@@ -93,3 +93,44 @@ def render_search_results(products):
                     <div class="product-price">₹{product['price']}</div>
                 </div>
             """, unsafe_allow_html=True)
+def render_suggestions(suggestions):
+    """Render smart suggestion cards (frequency-based + seasonal)."""
+    frequency = suggestions.get("frequency", [])
+    seasonal = suggestions.get("seasonal", [])
+
+    if not frequency and not seasonal:
+        return  # nothing to show, skip the section entirely
+
+    st.markdown("### Smart Suggestions")
+
+    if frequency:
+        st.markdown('<div class="category-label">Based on your habits</div>', unsafe_allow_html=True)
+        cols = st.columns(min(len(frequency), 4))
+        for idx, sug in enumerate(frequency):
+            with cols[idx % len(cols)]:
+                st.markdown(f"""
+                    <div class="product-card">
+                        <div><strong>{sug['item']}</strong></div>
+                        <div class="product-brand">{sug['reason']}</div>
+                    </div>
+                """, unsafe_allow_html=True)
+                if st.button(f"Add {sug['item']}", key=f"sugg_freq_{sug['item']}"):
+                    from services import db_service, command_handler
+                    command_handler.execute(f"Add {sug['item']}")
+                    st.rerun()
+
+    if seasonal:
+        st.markdown('<div class="category-label">In season this month</div>', unsafe_allow_html=True)
+        cols = st.columns(min(len(seasonal), 4))
+        for idx, item in enumerate(seasonal):
+            with cols[idx % len(cols)]:
+                st.markdown(f"""
+                    <div class="product-card">
+                        <div><strong>{item}</strong></div>
+                        <div class="product-brand">Seasonal pick</div>
+                    </div>
+                """, unsafe_allow_html=True)
+                if st.button(f"Add {item}", key=f"sugg_season_{item}"):
+                    from services import command_handler
+                    command_handler.execute(f"Add {item}")
+                    st.rerun()
